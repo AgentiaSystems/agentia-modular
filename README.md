@@ -21,21 +21,21 @@ var plugins = new Plugins();
 ## Application API
 
 ### .init()
-Calls the `.init()` method of all registered plugins.
+Initializes **agentia-plugins** and calls the `.init()` method of all registered plugins.
 
 ```js
 plugins.init();
 ```
 
 ### .execPre()
-Invokes all `.pre('hook-name')` registered by plugins.
+Invokes all `.pre('hook-name')` hooks registered by plugins.
 
 ```js
 plugins.execPre('hook-name', context, callback);
 ```
 
 ### .execPost()
-Invokes all `.post('hook-name')` registered by plugins.
+Invokes all `.post('hook-name')` hooks registered by plugins.
 
 ```js
 plugins.execPost('hook-name', context, callback);
@@ -45,18 +45,18 @@ plugins.execPost('hook-name', context, callback);
 Expose an object for dependency injection.
 
 ```js
-plugins.expose('dependency-name', object);
+plugins.addDependency('dependency-name', object);
 ```
 
 ### .removeDependency()
 Removes a previously added dependency.
 
 ```js
-plugins.expose('dependency-name');
+plugins.removeDependency('dependency-name');
 ```
 
 ### .emit()
-Emit an event. 
+Emits an event. 
 
 ```js
 plugins.emit('event-name', params);
@@ -109,26 +109,25 @@ module.exports = Plugin;
 > NOTE: Plugins get automatically added as dependencies (see `.addDendency()` above). So they can by injected into other plugins as required.
 
 ### .pre()
-Regsiter for a pre `hook-name` hook.
+Regsiters for a pre `hook-name` hook.
 
 ```js
 plugins.pre('hook-name', callback);
 ```
 
 ### .post()
-Register for a post `hook-name` hook.
+Registers for a post `hook-name` hook.
 
 ```js
 plugins.post('hook-name', callback);
 ```
 
 ### .on()
-Register a callback for event `event-name`.
+Registers a callback for event `event-name`.
 
 ```js
 plugins.on('event-name', callback);
 ```
-
 
 ## Plugin Consumer API
 
