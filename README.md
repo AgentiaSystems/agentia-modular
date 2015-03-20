@@ -45,14 +45,14 @@ plugins.execPost('hook-name', context, callback);
 Expose an object for dependency injection.
 
 ```js
-plugins.expose('dependency-name', object);
+plugins.addDependency('dependency-name', object);
 ```
 
 ### .removeDependency()
 Removes a previously added dependency.
 
 ```js
-plugins.expose('dependency-name');
+plugins.removeDependency('dependency-name');
 ```
 
 ### .emit()
