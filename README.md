@@ -7,66 +7,99 @@ A generic plugin architecture for Node.js apps.
 #Installation
 
 ```js
-npm install --save agentia-plugins
+npm install --save agentia-modular
 ```
 
 #Configuration
 
 ```js
-var plugins = new Plugins();
+var Modular = require('Modular');
+var modular = new Modular();
 ```
 
 #API
 
 ## Application API
 
-### .init()
-Initializes **agentia-plugins** and calls the `.init()` method of all registered plugins.
+### .start()
+Initializes **agentia-modular** and calls the `.init()` method of all registered plugins.
 
 ```js
-plugins.init();
+modular.start();
 ```
 
 ### .execPre()
-Invokes all `.pre('hook-name')` hooks registered by plugins.
+Invokes all `.pre('hook-name')` hooks registered by modular.
 
 ```js
-plugins.execPre('hook-name', context, callback);
+modular.execPre('hook-name', context, callback);
 ```
 
 ### .execPost()
-Invokes all `.post('hook-name')` hooks registered by plugins.
+Invokes all `.post('hook-name')` hooks registered by modular.
 
 ```js
-plugins.execPost('hook-name', context, callback);
+modular.execPost('hook-name', context, callback);
 ```
 
 ### .addDependency()
 Expose an object for dependency injection.
 
 ```js
-plugins.addDependency('dependency-name', object);
+modular.addDependency('dependency-name', object);
 ```
 
 ### .removeDependency()
 Removes a previously added dependency.
 
 ```js
-plugins.removeDependency('dependency-name');
+modular.removeDependency('dependency-name');
+```
+
+### .use()
+
+```js
+var plugin = require('plugin');
+modular.use(plugin());
+```
+
+### .load()
+
+```js
+modular.load('npm-module-plugin');
+modular.load('./path/to/module');
+```
+
+### .loadDirectory()
+
+```js
+modular.loadDirectory('./path/to/modules');
+```
+
+### .loadFromNpm()
+
+```js
+modular.loadFromNpm();
 ```
 
 ### .emit()
-Emits an event. 
+Emits an event.
 
 ```js
-plugins.emit('event-name', params);
+modular.emit('event-name', params);
+```
+
+### .set()
+
+```js
+modular.set('allowed types', ['site', 'auth']);
 ```
 
 ## Plugin API
 
 ### Plugin Registration
-var BasePlugin = require('agentia-plugins').BasePlugin;
-var utils = require('agentia-plugins').utils;
+var BasePlugin = require('agentia-modular').BasePlugin;
+var utils = require('agentia-modular').utils;
 
 ```js
 function Plugin(options) {
@@ -75,18 +108,19 @@ function Plugin(options) {
 	}
 	// must be a unique name
 	this.name = 'plugin-name';
-	
+	this.type = 'plugin-type'; //
+
 	// for plugin internal use
 	this.options = options;
-	
+
 	// app features to implement or replace
 	this.features = {
 		featureA: this.featureA,
-		featureB: this.featureB 
+		featureB: this.featureB
 	};
-	
+
 	returns this;
-	
+
 };
 
 utils.inherits(BasePlugin, Plugin);
@@ -112,34 +146,25 @@ module.exports = Plugin;
 Regsiters for a pre `hook-name` hook.
 
 ```js
-plugins.pre('hook-name', callback);
+this.pre('hook-name', callback);
 ```
 
 ### .post()
 Registers for a post `hook-name` hook.
 
 ```js
-plugins.post('hook-name', callback);
+this.post('hook-name', callback);
 ```
 
 ### .on()
 Registers a callback for event `event-name`.
 
 ```js
-plugins.on('event-name', callback);
-```
-
-## Plugin Consumer API
-
-### .use()
-
-```js
-var plugin = require('plugin');
-plugins.use(plugin(options));
+this.on('event-name', callback);
 ```
 
 # License
-Agentia Ping Handler is free and open source under the MIT License.
+Agentia Modular is free and open source under the MIT License.
 
 Copyright (c) 2015 [Johnny Estilles](https://github.com/JohnnyEstilles) and [Agentia Systems](http://www.agentia.asia)
 
@@ -148,4 +173,3 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
