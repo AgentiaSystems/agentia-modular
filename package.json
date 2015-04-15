@@ -1,0 +1,26 @@
+{
+  "name": "agentia-modular",
+  "version": "0.0.0",
+  "description": "A library for adding plugin capabilities to Node.js apps",
+  "homepage": "https://github.com/AgentiaSystems/agentia-modular",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/AgentiaSystems/agentia-modular.git"
+  },
+  "author": {
+    "name": "Johnny Estilles",
+    "email": "johnny.estilles@agentia.asia"
+  },
+  "main": "index.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "test": "echo \"no tests yet\""
+  },
+  "bugs": {
+    "url": "https://github.com/AgentiaSystems/agentia-modlar/issues"
+  },
+  "keywords": ["node", "node.js", "plugin", "plugins", "library"]
+}
