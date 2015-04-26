@@ -1,6 +1,6 @@
 {
   "name": "agentia-modular",
-  "version": "0.0.0",
+  "version": "1.0.0-alpa",
   "description": "A library for adding plugin capabilities to Node.js apps",
   "homepage": "https://github.com/AgentiaSystems/agentia-modular",
   "repository": {
