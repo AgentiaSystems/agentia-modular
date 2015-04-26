@@ -21,6 +21,27 @@ var modular = new Modular();
 
 ## Application API
 
+### .use()
+
+```js
+var plugin = require('plugin');
+modular.use(plugin());
+```
+
+### .load()
+
+```js
+modular.load('npm-module-plugin');
+modular.load('./path/to/module');
+```
+
+### .emit()
+Emits an event.
+
+```js
+modular.emit('event-name', params);
+```
+
 ### .start()
 Initializes **agentia-modular** and calls the `.init()` method of all registered plugins.
 
@@ -42,125 +63,95 @@ Invokes all `.post('hook-name')` hooks registered by modular.
 modular.execPost('hook-name', context, callback);
 ```
 
-### .addDependency()
-Expose an object for dependency injection.
+### .registerFunction()
+Used to register a `function` asset.
 
 ```js
-modular.addDependency('dependency-name', object);
+container.registerFunction(id, fn[, injectable]);
 ```
 
-### .removeDependency()
-Removes a previously added dependency.
+### .registerModule()
+Registers any Node.js requirable module as an asset. If it can be required using `require()` it can be registered using `.registerModule()`.
 
 ```js
-modular.removeDependency('dependency-name');
+container.registerModule([id,] module[, injectable]);
 ```
 
-### .use()
+### .registerInstance()
+Register any `string`, `number`, `date`, `array`, or `object` as an `instance` asset.
 
 ```js
-var plugin = require('plugin');
-modular.use(plugin());
+container.registerInstance(id, instance);
 ```
 
-### .load()
+### .inject()
+Inejcts a function with dependencies and returns its value. F
 
 ```js
-modular.load('npm-module-plugin');
-modular.load('./path/to/module');
+container.inject(ifn[, overrides][, context]);
 ```
 
-### .loadDirectory()
+### .resolve()
+Resolve a registered asset. For dependency-injectable factories (functions and modules), it resolves all it's dependencies before calling the factory function, resolving to it's return value. All other assets are returned "as-is".
 
 ```js
-modular.loadDirectory('./path/to/modules');
+container.resolve(id[, overrides][, context]);
 ```
 
-### .loadFromNpm()
+## Plugin definition
 
 ```js
-modular.loadFromNpm();
-```
+var Plugin = {
+  name: 'my-plugin',
 
-### .emit()
-Emits an event.
+	// any other data exposed by the plugin
+	key1: 'value1',
+	key2: { subkey1: 'sub value1', subkey2: 'sub value2' },
 
-```js
-modular.emit('event-name', params);
-```
+  init: function() {
+    // initialization code, called upon registration
+		// this.modular is available during init() method
+  },
 
-### .set()
+	start: function(dependencyA, dependencyB) {
+		// dependency injected start method, called on modular.start()
+	},
 
-```js
-modular.set('allowed types', ['site', 'auth']);
-```
+	// any other methods exposed by the plugin
+	methodA: function() {
 
-## Plugin API
+	},
 
-### Plugin Registration
-var BasePlugin = require('agentia-modular').BasePlugin;
-var utils = require('agentia-modular').utils;
+	methodB: function() {
 
-```js
-function Plugin(options) {
-	if (!(this instanceof PlugIn)) {
-		return new Plugin(options);
 	}
-	// must be a unique name
-	this.name = 'plugin-name';
-	this.type = 'plugin-type'; //
 
-	// for plugin internal use
-	this.options = options;
-
-	// app features to implement or replace
-	this.features = {
-		featureA: this.featureA,
-		featureB: this.featureB
-	};
-
-	returns this;
-
-};
-
-utils.inherits(BasePlugin, Plugin);
-
-// required;
-Plugin.prototype.init = function init(deps) {
-	...
-};
-
-Plugin.prototype.featureA = function featureA(deps) {
-	...
-};
-
-Plugin.prototype.featureB = function featureA(deps) {
-	...
 };
 
 module.exports = Plugin;
 ```
-> NOTE: Plugins get automatically added as dependencies (see `.addDendency()` above). So they can by injected into other plugins as required.
 
-### .pre()
+## Plugin API
+
+### .modular.pre()
 Regsiters for a pre `hook-name` hook.
 
 ```js
-this.pre('hook-name', callback);
+this.modular.pre('hook-name', callback);
 ```
 
-### .post()
+### .modular.post()
 Registers for a post `hook-name` hook.
 
 ```js
 this.post('hook-name', callback);
 ```
 
-### .on()
+### .modular.on()
 Registers a callback for event `event-name`.
 
 ```js
-this.on('event-name', callback);
+this.modular.on('event-name', callback);
 ```
 
 # License
