@@ -13,8 +13,17 @@
   },
   "main": "index.js",
   "dependencies": {
+    "agentia-change-case": "^1.0.0",
+    "agentia-utilities": "^1.4.0",
+    "bluebird": "^2.9.24",
+    "caller-id": "^0.1.0",
+    "debug": "^2.1.3",
+    "kareem": "^1.0.0"
   },
   "devDependencies": {
+    "gulp-bump": "^0.3.0",
+    "gulp-git": "^1.2.0",
+    "yargs": "^3.7.2"
   },
   "scripts": {
     "test": "echo \"no tests yet\""
@@ -22,5 +31,11 @@
   "bugs": {
     "url": "https://github.com/AgentiaSystems/agentia-modlar/issues"
   },
-  "keywords": ["node", "node.js", "plugin", "plugins", "library"]
+  "keywords": [
+    "node",
+    "node.js",
+    "plugin",
+    "plugins",
+    "library"
+  ]
 }
